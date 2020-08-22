@@ -25,11 +25,11 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="oneMinus" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="oneValue" type="text" class="form-control text-center" value="1">
+                           <button id="onePlus" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
+                        <h5>$<span id="oneBalance">1219</span> </h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -43,12 +43,12 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="twoMinus" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="twoValue" type="text" class="form-control text-center" value="1">
+                           <button id="twoPlus" class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
+                        <h5>$<span id="twoBalance">59</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -64,9 +64,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$<span id="subTotal">1278</span></h5>
+                        <h5>$<span id="vat">0</span></h5>
+                        <h5>$<span id="total">1278</span></h5>
                      </div>
                   </div>
                </div>
@@ -77,6 +77,81 @@
          </div>
       </div>
    </section>
+   <script>
+      //One Product Handle
+      var onePlus = document.getElementById("onePlus");
+      onePlus.addEventListener("click",function () {
+         incrementValue("oneValue");
+         incrementBalance("oneBalance", 1219);
+         updateVat();
+         updateTotal();
+      })
+      var onePlus = document.getElementById("oneMinus");
+      oneMinus.addEventListener("click",function () {
+         decrementValue("oneValue");
+         decrementBalance("oneBalance", 1219);
+         updateVat();
+         updateTotal();
+      })
+      //Two Product Handle
+      var twoPlus = document.getElementById("twoPlus");
+      twoPlus.addEventListener("click",function () {
+         incrementValue("twoValue");
+         incrementBalance("twoBalance", 59);
+         updateVat();
+         updateTotal();
+      })
+      var twoPlus = document.getElementById("twoMinus");
+      twoMinus.addEventListener("click",function () {
+         decrementValue("twoValue");
+         decrementBalance("twoBalance", 59);
+         updateVat();
+         updateTotal();
+      })
+      //functions
+      function incrementValue(id){
+         var value = parseInt(document.getElementById(id).value, 10);
+         if(value<100){
+            value++;
+            document.getElementById(id).value = value;
+         }
+      }
+      function decrementValue(id){
+         var value = parseInt(document.getElementById(id).value, 10);
+         if(value>1){
+            value--;
+            document.getElementById(id).value = value;
+         }
+      }
+      function incrementBalance(id,amount) {
+         var oneBalance = parseFloat(document.getElementById(id).innerText);
+         document.getElementById(id).innerText = oneBalance + amount;
+         var subTotal = parseFloat(document.getElementById("subTotal").innerText);
+         document.getElementById("subTotal").innerText = subTotal + amount;
+      }
+      function decrementBalance(id,amount) {
+         var oneBalance = parseFloat(document.getElementById(id).innerText);
+         if (oneBalance > amount) {
+            document.getElementById(id).innerText = oneBalance - amount;
+            var subTotal = parseFloat(document.getElementById("subTotal").innerText);
+            document.getElementById("subTotal").innerText = subTotal - amount;
+         }
+      }
+      function updateVat() {
+         var vat = parseFloat(document.getElementById("vat").innerText);
+         var subTotal = parseFloat(document.getElementById("subTotal").innerText);
+         if (subTotal > 1000) {
+            vat = subTotal * 0.018;
+            document.getElementById("vat").innerText = parseInt(vat);
+         }
+      }
+      function updateTotal() {
+         var total = parseFloat(document.getElementById("total").innerText);
+         var subTotal = parseFloat(document.getElementById("subTotal").innerText);
+         var vat = parseFloat(document.getElementById("vat").innerText);
+         document.getElementById("total").innerText = subTotal + vat;
+      }
+   </script>
 </body>
 
 </html>
